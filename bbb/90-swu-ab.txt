@@ -1,0 +1,25 @@
+# === SWUpdate A/B import & selection (SD) ===
+# always import env from SD card: mmc 0:1
+load mmc 0:1 ${loadaddr} uboot.env; env import -b ${loadaddr};
+
+setenv swu_active ${swu_active}; if test -z "${swu_active}"; then setenv swu_active A; fi
+setenv swu_status ${swu_status}; if test -z "${swu_status}"; then setenv swu_status ok; fi
+setenv swu_bootcount ${swu_bootcount}; if test -z "${swu_bootcount}"; then setenv swu_bootcount 0; fi
+setenv swu_bootlimit 3
+
+# pending? increment; rollback after N boots
+if test "${swu_status}" = "pending"; then setexpr swu_bootcount ${swu_bootcount} + 1; fi
+if test "${swu_status}" = "pending" && test ${swu_bootcount} -ge ${swu_bootlimit}; then
+  if test "${swu_active}" = "A"; then setenv swu_active B; else setenv swu_active A; fi;
+  setenv swu_status failed; setenv swu_bootcount 0;
+fi
+
+# load slot-specific uEnv from SD card
+if test "${swu_active}" = "A"; then
+  echo Booting Slot A (SD);
+  load mmc 0:1 ${loadaddr} uEnv-A.txt; env import -t ${loadaddr} ${filesize};
+else
+  echo Booting Slot B (SD);
+  load mmc 0:1 ${loadaddr} uEnv-B.txt; env import -t ${loadaddr} ${filesize};
+fi
+# === /SWUpdate A/B import & selection ===

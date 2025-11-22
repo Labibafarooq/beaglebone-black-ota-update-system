@@ -1,0 +1,13 @@
+software = {
+  version = "ota-demo-1";
+  description = "Demo: write version file to inactive slot and switch A/B";
+  hardware-compatibility = [ "BeagleBoneBlack" ];
+  reboot = true;
+
+  files: ( );
+
+  scripts: (
+    { filename = "write-demo-version.sh"; type = "preinstall";  sha256 = "134c60f1c26313a7eacbc70d75ea28f5347cda4fe68aa0e298d5fee1a96fb090"; },
+    { filename = "do-switch.sh";          type = "postinstall"; sha256 = "411a1c42a66a6edccbef153bec66ea3a227a7ef9caa417ab4cba90759c4eea31"; }
+  );
+}
