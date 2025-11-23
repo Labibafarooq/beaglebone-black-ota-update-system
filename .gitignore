@@ -1,14 +1,12 @@
-# Ignore built OTA packages
-*.swu
-*.sig
+# --- Build outputs only (safe to ignore) ---
+pkgs/out/*.swu
+pkgs/out/*.sig
 
 # Python cache (for HTTPS server)
 __pycache__/
 
-# Ignore local files copied during testing
-latest.swu
+# Logs
 *.log
 
-# Ignore certificate private keys (if ever created accidentally)
+# Certificate private keys (never commit)
 *.key
-
