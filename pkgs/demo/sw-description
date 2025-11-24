@@ -4,10 +4,25 @@ software = {
   hardware-compatibility = [ "BeagleBoneBlack" ];
   reboot = true;
 
-  files: ( );
+  files: (
+    {
+      filename = "update.bin";
+      path = "/opt/ota_demo/update.bin";
+      type = "rawfile";
+      sha256 = "__UPDATE_BIN_SHA__";
+    }
+  );
 
   scripts: (
-    { filename = "write-demo-version.sh"; type = "preinstall";  sha256 = "134c60f1c26313a7eacbc70d75ea28f5347cda4fe68aa0e298d5fee1a96fb090"; },
-    { filename = "do-switch.sh";          type = "postinstall"; sha256 = "411a1c42a66a6edccbef153bec66ea3a227a7ef9caa417ab4cba90759c4eea31"; }
+    {
+      filename = "write-demo-version.sh";
+      type = "preinstall";
+      sha256 = "__WRITE_SCRIPT_SHA__";
+    },
+    {
+      filename = "do-switch.sh";
+      type = "postinstall";
+      sha256 = "__SWITCH_SCRIPT_SHA__";
+    }
   );
-}
+};

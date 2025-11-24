@@ -1,22 +1,16 @@
-#!/bin/sh
-set -eu
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Detect active root
-ME="$(findmnt -no SOURCE /)"
-case "$ME" in
-  */mmcblk0p3) OTHER=/dev/mmcblk0p4 ;;
-  */mmcblk0p4) OTHER=/dev/mmcblk0p3 ;;
-  *) echo "Unknown active rootfs: $ME" >&2; exit 1 ;;
-esac
+# This script is meant to run on the LAPTOP to generate a fresh payload.
+# It does NOT try to detect BBB rootfs slots.
 
-echo "[write-demo-version] active=$ME other=$OTHER"
+OUT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PAYLOAD="$OUT_DIR/update.bin"
 
-mkdir -p /mnt/other
-mount "$OTHER" /mnt/other
+VERSION_TAG="${1:-v$(date +%Y%m%d-%H%M%S)}"
 
-mkdir -p /mnt/other/usr/local/share/ota-demo
-echo "v2-from-swu" > /mnt/other/usr/local/share/ota-demo/version.txt
-sync
+echo "This is update ${VERSION_TAG} at $(date)" > "$PAYLOAD"
 
-umount /mnt/other
-echo "[write-demo-version] updated version on inactive slot."
+echo "[OK] Wrote payload:"
+ls -lh "$PAYLOAD"
+cat "$PAYLOAD"
