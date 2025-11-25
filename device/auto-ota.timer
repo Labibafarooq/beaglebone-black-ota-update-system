@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Auto OTA Polling every minute
+
+[Timer]
+OnBootSec=30
+OnUnitActiveSec=60
+Unit=auto-ota.service
+
+[Install]
+WantedBy=timers.target

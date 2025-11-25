@@ -10,3 +10,10 @@ __pycache__/
 
 # Certificate private keys (never commit)
 *.key
+
+# demo payload is generated
+pkgs/demo/update.bin
+
+# do not commit TLS private material
+server/*.crt
+server/*.key
